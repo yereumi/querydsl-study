@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.querydsl.dto.MemberDto;
+import study.querydsl.dto.QMemberDto;
 import study.querydsl.dto.UserDto;
 import study.querydsl.entity.Member;
 import study.querydsl.entity.QMember;
@@ -492,6 +493,12 @@ public class QuerydslBasicTest {
         }
     }
 
+    /**
+     * 순수 JPA에서 DTO 조회 코드
+     * - new 명령어를 사용해야 함
+     * - DTO의 package이름을 다 적어줘야해서 지저분함
+     * - 생성자 방식만 지원함
+     */
     @Test
     public void findDtoByJPQL() {
         List<MemberDto> result = em.createQuery(
@@ -503,6 +510,9 @@ public class QuerydslBasicTest {
         }
     }
 
+    /**
+     * Querydsl 빈 생성
+     */
     @Test
     public void findDtoBySetter() {
         List<MemberDto> result = queryFactory
@@ -549,6 +559,13 @@ public class QuerydslBasicTest {
         }
     }
 
+    /**
+     * 생성자
+     * 장점
+     * - 객체 생성 시점에 필요한 값들을 한 번에 할당할 수 있어 객체의 불변성을 유지하는데 도움이 됨
+     * 단점
+     * - 생성자의 인자 수가 많아질수록 코드가 복잡해질 수 있음
+     */
     @Test
     public void findDtoByConstructor() {
         List<UserDto> result = queryFactory
@@ -560,6 +577,26 @@ public class QuerydslBasicTest {
 
         for (UserDto userDto : result) {
             System.out.println("userDto = " + userDto);
+        }
+    }
+
+    /**
+     * @QueryProjection
+     * 장점
+     * - 컴파일 시점에서 오류를 발견할 수 있음
+     * - 코드가 간결하고 가독성이 좋음
+     * 단점
+     * - 엔티티 클래스에 Querydsl 관련 코드가 추가되므로 도메인 객체와 쿼리 코드의 결합도가 증가함
+     */
+    @Test
+    public void findDtoByQueryProjection() {
+        List<MemberDto> result = queryFactory
+                .select(new QMemberDto(member.username, member.age))
+                .from(member)
+                .fetch();
+
+        for (MemberDto memberDto : result) {
+            System.out.println("memberDto = " + memberDto);
         }
     }
 }
