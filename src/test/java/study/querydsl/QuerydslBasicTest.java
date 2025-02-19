@@ -49,7 +49,6 @@ public class QuerydslBasicTest {
         em.persist(teamA);
         em.persist(teamB);
 
-
         Member member1 = new Member("member1", 10, teamA);
         Member member2 = new Member("member2", 20, teamA);
 
@@ -141,10 +140,7 @@ public class QuerydslBasicTest {
     }
 
     /**
-     * 회원 정렬 순서
-     * 1. 회원 나이 내림차순(desc)
-     * 2. 회원 이르미 오름차순(asc)
-     * 단 2에서 회원 이름이 없으면 마지막에 출력(nulls last)
+     * 회원 정렬 순서 1. 회원 나이 내림차순(desc) 2. 회원 이르미 오름차순(asc) 단 2에서 회원 이름이 없으면 마지막에 출력(nulls last)
      */
     @Test
     public void sort() {
@@ -264,8 +260,8 @@ public class QuerydslBasicTest {
     }
 
     /**
-     * 예) 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조회
-     * JPQL: select m, t from Member m left join m.team t on t.name = 'teamA'
+     * 예) 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조회 JPQL: select m, t from Member m left join m.team t on t.name =
+     * 'teamA'
      */
     @Test
     public void join_on_filtering() {
@@ -283,8 +279,7 @@ public class QuerydslBasicTest {
     }
 
     /**
-     * 연관관계가 없는 엔티티 외부 조인
-     * 회원의 이름이 팀 이름과 같은 대상 외부 조인
+     * 연관관계가 없는 엔티티 외부 조인 회원의 이름이 팀 이름과 같은 대상 외부 조인
      */
     @Test
     public void join_on_no_relation() {
@@ -486,7 +481,7 @@ public class QuerydslBasicTest {
                 .select(member.username, member.age)
                 .from(member)
                 .fetch();
-        
+
         for (Tuple tuple : result) {
             String username = tuple.get(member.username);
             Integer age = tuple.get(member.age);
@@ -496,10 +491,7 @@ public class QuerydslBasicTest {
     }
 
     /**
-     * 순수 JPA에서 DTO 조회 코드
-     * - new 명령어를 사용해야 함
-     * - DTO의 package이름을 다 적어줘야해서 지저분함
-     * - 생성자 방식만 지원함
+     * 순수 JPA에서 DTO 조회 코드 - new 명령어를 사용해야 함 - DTO의 package이름을 다 적어줘야해서 지저분함 - 생성자 방식만 지원함
      */
     @Test
     public void findDtoByJPQL() {
@@ -562,11 +554,7 @@ public class QuerydslBasicTest {
     }
 
     /**
-     * 생성자
-     * 장점
-     * - 객체 생성 시점에 필요한 값들을 한 번에 할당할 수 있어 객체의 불변성을 유지하는데 도움이 됨
-     * 단점
-     * - 생성자의 인자 수가 많아질수록 코드가 복잡해질 수 있음
+     * 생성자 장점 - 객체 생성 시점에 필요한 값들을 한 번에 할당할 수 있어 객체의 불변성을 유지하는데 도움이 됨 단점 - 생성자의 인자 수가 많아질수록 코드가 복잡해질 수 있음
      */
     @Test
     public void findDtoByConstructor() {
@@ -583,12 +571,8 @@ public class QuerydslBasicTest {
     }
 
     /**
-     * @QueryProjection
-     * 장점
-     * - 컴파일 시점에서 오류를 발견할 수 있음
-     * - 코드가 간결하고 가독성이 좋음
-     * 단점
-     * - 엔티티 클래스에 Querydsl 관련 코드가 추가되므로 도메인 객체와 쿼리 코드의 결합도가 증가함
+     * @QueryProjection 장점 - 컴파일 시점에서 오류를 발견할 수 있음 - 코드가 간결하고 가독성이 좋음 단점 - 엔티티 클래스에 Querydsl 관련 코드가 추가되므로 도메인 객체와 쿼리 코드의
+     * 결합도가 증가함
      */
     @Test
     public void findDtoByQueryProjection() {
@@ -646,22 +630,21 @@ public class QuerydslBasicTest {
     }
 
     private BooleanExpression usernameEq(String usernameCond) {
-        if (usernameCond == null) return null;
+        if (usernameCond == null)
+            return null;
         return member.username.eq(usernameCond);
 //        return usernameCond != null ? member.username.eq(usernameCond) : null;
     }
 
     private BooleanExpression ageEq(Integer ageCond) {
-        if (ageCond == null) return null;
+        if (ageCond == null)
+            return null;
         return member.age.eq(ageCond);
 //        return ageCond != null ? member.age.eq(ageCond) : null;
     }
 
     /**
-     * 조합 가능
-     * ex) 광고 상태: isValid, 날짜가 IN: isServicable
-     * 메서드를 다른 쿼리에서 재활용 가능
-     * 쿼리 자체의 가독성 향상
+     * 조합 가능 ex) 광고 상태: isValid, 날짜가 IN: isServicable 메서드를 다른 쿼리에서 재활용 가능 쿼리 자체의 가독성 향상
      */
     private BooleanExpression allEq(String usernameCond, Integer ageCond) {
         return usernameEq(usernameCond).and(ageEq(ageCond));
@@ -713,5 +696,33 @@ public class QuerydslBasicTest {
                 .delete(member)
                 .where(member.age.gt(18))
                 .execute();
+    }
+
+    @Test
+    public void sqlFunction() {
+        List<String> result = queryFactory
+                .select(
+                        Expressions.stringTemplate("function('replace', {0}, {1}, {2})",
+                                member.username, "member", "M"))
+                .from(member)
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+
+    @Test
+    public void sqlFunction2() {
+        List<String> result = queryFactory
+                .select(member.username)
+                .from(member)
+                .where(member.username.eq(
+                        Expressions.stringTemplate("function('lower', {0})", member.username)))
+                .fetch();
+
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
     }
 }
