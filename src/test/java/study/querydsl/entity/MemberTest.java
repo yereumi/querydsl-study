@@ -21,7 +21,6 @@ class MemberTest {
         em.persist(teamA);
         em.persist(teamB);
 
-
         Member member1 = new Member("member1", 10, teamA);
         Member member2 = new Member("member2", 20, teamA);
 
