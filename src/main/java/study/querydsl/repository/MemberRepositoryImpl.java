@@ -40,7 +40,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .leftJoin(member.team, team)
                 .where(
                         usernameEq(condition.getUsername()),
-                        TeamNameEq(condition.getTeamName()),
+                        teamNameEq(condition.getTeamName()),
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe()))
                 .fetch();
@@ -59,7 +59,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .leftJoin(member.team, team)
                 .where(
                         usernameEq(condition.getUsername()),
-                        TeamNameEq(condition.getTeamName()),
+                        teamNameEq(condition.getTeamName()),
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe()))
                 .offset(pageable.getOffset())
@@ -85,7 +85,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .leftJoin(member.team, team)
                 .where(
                         usernameEq(condition.getUsername()),
-                        TeamNameEq(condition.getTeamName()),
+                        teamNameEq(condition.getTeamName()),
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe()))
                 .offset(pageable.getOffset())
@@ -97,7 +97,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .from(member)
                 .where(
                         usernameEq(condition.getUsername()),
-                        TeamNameEq(condition.getTeamName()),
+                        teamNameEq(condition.getTeamName()),
                         ageGoe(condition.getAgeGoe()),
                         ageLoe(condition.getAgeLoe()));
 
@@ -109,7 +109,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
         return hasText(username) ? member.username.eq(username) : null;
     }
 
-    private BooleanExpression TeamNameEq(String teamName) {
+    private BooleanExpression teamNameEq(String teamName) {
         return hasText(teamName) ? team.name.eq(teamName) : null;
     }
 
